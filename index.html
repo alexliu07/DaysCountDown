@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Days Count Down</title>
+        <meta charset='utf-8'>
+    </head>
+    <style>
+    @font-face {
+		font-family:weiruanyahei;
+	    src:url("fonts/msyh.ttc");
+	}
+    @font-face {
+		font-family:dengxian;
+	    src:url("fonts/dengxian.ttf");
+	}
+    @keyframes in { 
+        0% {opacity: 0;}
+        100%{opacity:1;}
+    }
+    @keyframes out { 
+        0% {opacity: 1;}
+        100%{opacity:0;}
+    }
+    #container{
+        width: 100%;
+        height: 480px;
+    }
+    #topbar{
+        height: 15%;
+        width: 100%;
+        border-radius: 10px 10px 0px 0px;
+        text-align: center;
+        
+    }
+    #counter{
+        height: 75%;
+        width: 100%;
+        background-color: white;
+        text-align: center;
+    }
+    #targetday{
+        height: 10%;
+        width: 100%;
+        background-color: #f7f6f4;
+        border-radius: 0px 0px 10px 10px;
+        text-align: center;
+    }
+    .top{
+        font-size: 40px;
+        color:white;
+    }
+    .text{
+        font-family: weiruanyahei;
+    }
+    #targetname{
+        -webkit-app-region:drag;
+        font-weight: bold;
+    }
+    #toptexts{
+        padding-top: 2%;
+    }
+    .counter{
+        font-size: 50px;
+    }
+    #number{
+        font-family: dengxian;
+        font-size: 250px;
+        font-weight: bold;
+    }
+    #countertexts{
+        padding-top: 10%;
+    }
+    .target{
+        font-size: 30px;
+        color: #afadad;
+    }
+    #targettexts{
+        padding-top: 1%;
+    }
+    #controlbar{
+        height: 7%;
+        width: 96.8%;
+        background-color: rgba(0, 0, 0,0.4);
+        position: absolute;
+        z-index: 2;
+        border-radius: 10px 10px 0px 0px;
+        display: none;
+        transition: 0.4s;
+        transition-duration: 0.4s;
+    }
+    #topbar:hover #controlbar{
+        display: block;
+    }
+    button {
+        transition: 0.4s;
+        transition-duration: 0.4s;
+        background-color: white;
+        color: black;
+        border: 3px solid yellowgreen;
+        border-radius: 10px;
+        font-family: weiruanyahei;
+    }
+    button:hover {
+        background-color:yellowgreen;
+        color: white;
+        border-radius: 10px;
+    }
+    .btns{
+        transition: 0.4s;
+        transition-duration: 0.4s;
+        width: 15%;
+    }
+    .btns:hover{
+        background-color: rgba(211, 211, 211, 0.4);
+        border-radius: 10%;
+    }
+    #exitandset{
+        transition: 0.4s;
+        transition-duration: 0.4s;
+        padding-left: 65%;
+        padding-right: 1%;
+        padding-top: 1%;
+        display: inline-block;
+        text-align: right;
+    }
+    #exitbtn{
+        padding-left: 65%;
+        padding-right: 1%;
+        padding-top: 1%;
+        display: inline-block;
+        text-align: right;
+    }
+    #mainwindow{
+        transition: 0.4s;
+        transition-duration: 0.4s;
+        display: none;
+        height: 100%;
+    }
+    #settingwindow{
+        height: 100%;
+        text-align: center;
+        border-radius: 10px;
+        background-color: #3184d0;
+        display: none;
+    }
+    #undefinedwindow{
+        transition: 0.4s;
+        transition-duration: 0.4s;
+        height: 100%;
+        text-align: center;
+        border-radius: 10px;
+        background-color: #3184d0;
+        display: none;
+    }
+    #noday{
+        margin-top: 25%;
+    }
+    #dragbar{
+        width: 100%;
+        height: 10%;
+        -webkit-app-region:drag;
+    }
+    #nodaytext{
+        color: white;
+        font-size: 35px;
+    }
+    #locku{
+        transition: 0.4s;
+        transition-duration: 0.4s;
+        -webkit-app-region:no-drag;
+    }
+    #exitundefined{
+        transition: 0.4s;
+        transition-duration: 0.4s;
+        -webkit-app-region:no-drag;
+    }
+    #createctd{
+        width: 50%;
+        height: 50px;
+        font-size: 25px;
+    }
+    .settext{
+        font-family: weiruanyahei;
+        color: white;
+    }
+    #titlew{
+        font-weight: bold;
+        font-size: 30px;
+        -webkit-app-region:drag;
+    }
+    #sstext{
+        font-size: 30px;
+    }
+    #editdiv{
+        margin-top: 20%;
+    }
+    #line{
+        width: 50%;
+    }
+    .setbtn{
+        width: 60px;
+        height: 40px;
+        font-size: 15px;
+    }
+    .warntext{
+        font-size: 20px;
+    }
+    #delete{
+        border-color: red;
+    }
+    #delete:hover{
+        background-color: red;
+    }
+    #isnone{
+        display: none;
+    }
+    </style>
+    <body>
+        <div id="container">
+            <div id="mainwindow">
+                <div id="topbar">
+                    <div id="controlbar">
+                        <div id="exitandset">
+                            <img class="btns" id="lockm">
+                            <img class="btns" src="imgs/edit.png" id="set">
+                            <img class="btns" src="imgs/close.png" id="exit">
+                        </div>
+                    </div>
+                    <div id="toptexts">
+                        <span class="text top">距</span>&nbsp;
+                        <span class="text top" id="targetname"></span>&nbsp;
+                        <span class="text top" id="modetext"></span>
+                    </div>
+                </div>
+                <div id="counter">
+                    <div id="countertexts">
+                        <span class="text counter" id="number"></span>
+                        <span class="text counter">天</span>
+                    </div>
+                </div>
+                <div id="targetday">
+                    <div id="targettexts">
+                        <span class="text target" id="modetarget"></span>
+                        <span class="text target" id="targetdd"></span>
+                    </div>
+                </div>
+            </div>
+            <div id="undefinedwindow">
+                <div id="dragbar">
+                    <div id="exitbtn">
+                        <img class="btns" id="locku">
+                        <img class="btns" src="imgs/close.png" id="exitundefined">
+                    </div>
+                </div>
+                <div id="noday">
+                    <span class="text" id="nodaytext">目前没有倒数日。</span><br><br>
+                    <button class="button" id="createctd">创建倒数日</button>
+                </div>
+            </div>
+            <div id="settingwindow">
+                <div id="setting">
+                    <span class="settext" id="titlew">简易倒数日 - By Alex Liu</span>
+                    <div id="editdiv">
+                        <span class="settext" id="sstext">编辑倒数日</span><br>
+                        <hr id="line">
+                        <span class="settext warntext" id="namew">名称：</span>
+                        <input type="text" id="named"><br>
+                        <span class="settext warntext" id="datew">目标日：</span>
+                        <input type="date" id="targetd"><br><br>
+                        <button class="setbtn" id="save">保存</button>
+                        <button class="setbtn" id="cancel">取消</button>
+                        <button class="setbtn" id="delete">删除</button><br><br>
+                        <span class="settext warntext" id="isnone">名称或目标日不能为空</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            //声明变量及导入库
+            const { ipcRenderer } = require("electron");
+            var status,targetname,targetdate,daysleft,mode,lock;
+            //设置窗口坐标
+            ipcRenderer.sendSync("sync-message", 'setpos');
+            //注册组件
+            //锁定拖动
+            var lockBtnm = document.getElementById('lockm');
+            var lockBtnu = document.getElementById('locku');
+            var dgbaru = document.getElementById('dragbar');
+            //窗口
+            var mainwindow = document.getElementById('mainwindow');
+            var undefinedwindow = document.getElementById('undefinedwindow');
+            var settingwindow = document.getElementById('settingwindow');
+            //与模式发生变化
+            var toptexts = document.getElementById('topbar');
+            var modetext = document.getElementById('modetext');
+            var modetarget = document.getElementById('modetarget');
+            //需跳转到设置页面的按钮
+            var mainSet = document.getElementById('set');
+            var undefinedSet = document.getElementById('createctd');
+            var back = document.getElementById('cancel')
+            //关闭按钮
+            var mainExit = document.getElementById('exit');
+            var undefinedExit = document.getElementById('exitundefined');
+            //信息显示
+            var tname = document.getElementById('targetname');
+            var dleft = document.getElementById('number');
+            var tdate = document.getElementById('targetdd');
+            //操作指令
+            var save = document.getElementById('save');
+            var deletebtn = document.getElementById('delete');
+            var isnone = document.getElementById('isnone');
+            //填写的信息
+            var named = document.getElementById('named');
+            var targetd = document.getElementById('targetd');
+            //获取信息
+            var info = ipcRenderer.sendSync("sync-message", 'getinfo');
+            status = info[0];
+            targetname = info[1];
+            targetdate = info[2];
+            daysleft = info[3];
+            mode = info[4];
+            //显示信息
+            tname.innerHTML = targetname;
+            dleft.innerHTML = daysleft;
+            tdate.innerHTML = targetdate;
+            //显示模式切换
+            if(mode == 'past'){
+                toptexts.style.backgroundColor = '#e67b2f';
+                modetext.innerHTML = '已经过去：';
+                modetarget.innerHTML = '起始日：';
+            }else{
+                toptexts.style.backgroundColor = '#3184d0';
+                modetext.innerHTML = '还有：'
+                modetarget.innerHTML = '目标日：';
+            }
+            //获取锁定状态
+            var lockstatus = ipcRenderer.sendSync("sync-message", 'getlock');
+            lock = lockstatus;
+            if(lockstatus == 'unlocked'){
+                lockBtnm.src = 'imgs/unlocked.png';
+                lockBtnu.src = 'imgs/unlocked.png';
+                tname.style.webkitAppRegion = 'drag';
+                dgbaru.style.webkitAppRegion = 'drag';
+            }else{
+                lockBtnm.src = 'imgs/locked.png';
+                lockBtnu.src = 'imgs/locked.png';
+                tname.style.webkitAppRegion = 'no-drag';
+                dgbaru.style.webkitAppRegion = 'no-drag';
+            }
+            //10天以内使用红字提醒
+            if(mode == 'future' && daysleft <= 10){
+                dleft.style.color = 'red';
+            }else{
+                dleft.style.color = 'black';
+            }
+            //根据状态显示窗口
+            if(status == 'undefined'){
+                undefinedwindow.style.animation = 'in 0.6s 1';
+                undefinedwindow.style.display = 'block';
+            }else if(status == 'countdown'){
+                mainwindow.style.animation = 'in 0.6s 1';
+                mainwindow.style.display = 'block';
+            }
+            //点击锁切换状态，且保存位置
+            lockBtnm.onclick = function(){
+                if(lock == 'unlocked'){
+                    ipcRenderer.sendSync("sync-message", 'lock');
+                    lock = 'locked';
+                    lockBtnm.src = 'imgs/locked.png';
+                    lockBtnu.src = 'imgs/locked.png';
+                    tname.style.webkitAppRegion = 'no-drag';
+                    dgbaru.style.webkitAppRegion = 'no-drag';
+                }else{
+                    ipcRenderer.sendSync("sync-message", 'unlock');
+                    lock = 'unlocked';
+                    lockBtnm.src = 'imgs/unlocked.png';
+                    lockBtnu.src = 'imgs/unlocked.png';
+                    tname.style.webkitAppRegion = 'drag';
+                    dgbaru.style.webkitAppRegion = 'drag';
+                }
+            }
+            lockBtnu.onclick = function(){
+                if(lock == 'unlocked'){
+                    ipcRenderer.sendSync("sync-message", 'lock');
+                    lock = 'locked';
+                    lockBtnm.src = 'imgs/locked.png';
+                    lockBtnu.src = 'imgs/locked.png';
+                    tname.style.webkitAppRegion = 'no-drag';
+                    dgbaru.style.webkitAppRegion = 'no-drag';
+                }else{
+                    ipcRenderer.sendSync("sync-message", 'unlock');
+                    lock = 'unlocked';
+                    lockBtnm.src = 'imgs/unlocked.png';
+                    lockBtnu.src = 'imgs/unlocked.png';
+                    tname.style.webkitAppRegion = 'drag';
+                    dgbaru.style.webkitAppRegion = 'drag';
+                }
+            }
+            //点击编辑跳转编辑页面
+            mainSet.onclick = function(){
+                named.value = targetname;
+                targetd.value = targetdate;
+                mainwindow.style.animation = 'out 0.2s 1';
+                mainwindow.style.display = 'none';
+                deletebtn.style.display = 'inline-block';
+                settingwindow.style.animation = 'in 0.6s 1';
+                settingwindow.style.display = 'block';
+            }
+            //点击创建跳转编辑页面
+            undefinedSet.onclick = function(){
+                undefinedwindow.style.animation = 'out 0.2s 1';
+                undefinedwindow.style.display = 'none';
+                deletebtn.style.display = 'none';
+                settingwindow.style.animation = 'in 0.6s 1';
+                settingwindow.style.display = 'block';
+            }
+            //点击取消关闭编辑页面
+            back.onclick = function(){
+                settingwindow.style.animation = 'out 0.2s 1';
+                settingwindow.style.display = 'none';
+                isnone.style.display = 'none';
+                if(status == 'undefined'){
+                    undefinedwindow.style.animation = 'in 0.6s 1';
+                    undefinedwindow.style.display = 'block';
+                }else if(status == 'countdown'){
+                    mainwindow.style.animation = 'in 0.6s 1';
+                    mainwindow.style.display = 'block';
+                }
+            }
+            //点击关闭按钮关闭程序
+            mainExit.onclick = function(){
+                ipcRenderer.sendSync("sync-message", 'exit');
+            }
+            undefinedExit.onclick = function(){
+                ipcRenderer.sendSync("sync-message", 'exit');
+            }
+            //保存信息
+            save.onclick = function(){
+                if(named.value == null || named.value == '' || targetd.value == null || targetd.value == ''){
+                    isnone.style.display = 'block';
+                }else{
+                    //保存配置
+                    console.log(named.value+' '+targetd.value);
+                    var ddleft = ipcRenderer.sendSync("sync-message", 'save/../'+named.value+'/../'+targetd.value);
+                    //获取及显示信息
+                    if(Number(ddleft) <0){
+                        mode = 'past';
+                        daysleft = String(-Number(ddleft));
+                    }else{
+                        mode = 'future';
+                        daysleft = ddleft;
+                    }
+                    if(mode == 'future' && daysleft <= 10){
+                        dleft.style.color = 'red';
+                    }else{
+                        dleft.style.color = 'black';
+                    }
+                    if(mode == 'past'){
+                        toptexts.style.backgroundColor = '#e67b2f';
+                        modetext.innerHTML = '已经过去：';
+                        modetarget.innerHTML = '起始日：';
+                    }else{
+                        toptexts.style.backgroundColor = '#3184d0';
+                        modetext.innerHTML = '还有：'
+                        modetarget.innerHTML = '目标日：';
+                    }
+                    status = 'countdown';
+                    targetname = named.value;
+                    targetdate = targetd.value;
+                    tname.innerHTML = targetname;
+                    dleft.innerHTML = daysleft;
+                    tdate.innerHTML = targetdate;
+                    settingwindow.style.animation = 'out 0.2s 1';
+                    settingwindow.style.display = 'none';
+                    isnone.style.display = 'none';
+                    mainwindow.style.animation = 'in 0.6s 1';
+                    mainwindow.style.display = 'block';
+                }
+            }
+            //删除信息
+            deletebtn.onclick = function(){
+                named.value = '';
+                targetd.value = '';
+                //删除配置
+                ipcRenderer.sendSync("sync-message", 'delete');
+                status = 'undefined';
+                settingwindow.style.animation = 'out 0.2s 1';
+                settingwindow.style.display = 'none';
+                isnone.style.display = 'none';
+                undefinedwindow.style.animation = 'in 0.6s 1';
+                undefinedwindow.style.display = 'block';
+            }
+            //每隔600秒刷新一次
+            var timer = setInterval(function(){
+                if(status == 'countdown'){
+                    //获取信息
+                    var info = ipcRenderer.sendSync("sync-message", 'getinfo');
+                    status = info[0];
+                    targetname = info[1];
+                    targetdate = info[2];
+                    daysleft = info[3];
+                    mode = info[4];
+                    //显示信息
+                    tname.innerHTML = targetname;
+                    dleft.innerHTML = daysleft;
+                    tdate.innerHTML = targetdate;
+                    //显示模式切换
+                    if(mode == 'past'){
+                        toptexts.style.backgroundColor = '#e67b2f';
+                        modetext.innerHTML = '已经过去：';
+                        modetarget.innerHTML = '起始日：';
+                    }else{
+                        toptexts.style.backgroundColor = '#3184d0';
+                        modetext.innerHTML = '还有：'
+                        modetarget.innerHTML = '目标日：';
+                    }
+                    //10天以内使用红字提醒
+                    if(mode == 'future' && daysleft <= 10){
+                        dleft.style.color = 'red';
+                    }else{
+                        dleft.style.color = 'black';
+                    }
+                }
+            },600000);
+        </script>
+    </body>
+</html>

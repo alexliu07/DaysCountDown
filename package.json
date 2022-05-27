@@ -1,0 +1,15 @@
+{
+  "name": "dayscountdown",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "electron .",
+    "package":"electron-packager . --icon=icon.ico --electron-version=17.0.1"
+  },
+  "author": "alexliu",
+  "license": "ISC",
+  "dependencies": {
+    "iconv-lite": "^0.6.3"
+  }
+}
