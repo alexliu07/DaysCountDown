@@ -33,12 +33,17 @@ if current_version < latest_version:
         ipconfig = requests.get('http://ip-api.com/json/'+curip).json()
     except Exception as e:
         error(e)
+    #查找更新包大小
+    for i in latest_version_detail['assets']:
+        if i['name'] == 'app-update.zip':
+            update_size = i['size']
+    #检测github是否能正常访问
     if ipconfig['countryCode'] == 'CN':
         github = 'hub.xn--gzu630h.xn--kpry57d'
     else:
         github = 'github.com'
     #询问是否更新
-    asks = messagebox.askokcancel('Days Count Down更新','检测到倒数日电脑版有更新，是否进行更新？')
+    asks = messagebox.askokcancel('Days Count Down更新','检测到倒数日电脑版有更新，是否进行更新？\n新版本：{}    当前版本：{}\n更新内容：\n{}'.format(latest_version,current_version,latest_version_detail['body']))
     if asks:
         #检测文件夹是否存在
         if not os.path.exists('updater/tmp'):
@@ -54,16 +59,21 @@ if current_version < latest_version:
             except Exception as e:
                 error(e)
         print('更新下载完毕')
-        os.system('taskkill /t /f /im dayscountdown.exe')
-        #删除源文件
-        os.system('rmdir /s /q resources\\app')
-        #解压更新文件
-        os.system('updater\\7zip\\7za.exe x -o"resources" updater/tmp/tmp.zip')
-        #记录最新版本
-        filen = open('version.ini','w+',encoding='utf-8')
-        filen.write(str(latest_version))
-        filen.close()
-        #删除临时下载文件
-        os.remove('updater/tmp/tmp.zip')
-        #启动程序
-        os.system('start dayscountdown.exe')
+        #检测文件是否匹配
+        file_size = os.path.getsize('updater/tmp/tmp.zip')
+        if file_size == update_size:
+            os.system('taskkill /t /f /im dayscountdown.exe')
+            #删除源文件
+            os.system('rmdir /s /q resources\\app')
+            #解压更新文件
+            os.system('updater\\7zip\\7za.exe x -o"resources" updater/tmp/tmp.zip')
+            #记录最新版本
+            filen = open('version.ini','w+',encoding='utf-8')
+            filen.write(str(latest_version))
+            filen.close()
+            #删除临时下载文件
+            os.remove('updater/tmp/tmp.zip')
+            #启动程序
+            os.system('start dayscountdown.exe')
+        else:
+            error('File size not match. Maybe download error.')
