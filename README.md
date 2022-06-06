@@ -19,11 +19,9 @@
 ***
 本程序采用Electron + Python的实现方式，需要先进行编译Python文件才可使用源码运行<br>
 ***
-### util.py使用
-***
-此文件为程序使用所需的系统交互代码，必须编译才可运行程序
+util.py为程序使用所需的系统交互代码，必须编译才可使用源码运行程序
 1. 安装Python
-2. 安装pyinstaller<br>`pip install pyinstaller`
+2. 安装Pyinstaller<br>`pip install pyinstaller`
 3. 在源码路径下新建utils文件夹
 4. 将otherfiles下的util.py使用pyinstaller编译
 5. 将编译后的文件放入源码路径下utils文件夹
