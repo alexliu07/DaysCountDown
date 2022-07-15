@@ -1,4 +1,15 @@
-import os,sys,datetime
+import os,sys,datetime,platform
+#检测win7
+def checkwin7():
+    final = []
+    version = platform.version().split('.')
+    final.append(version[0])
+    final.append(version[1])
+    final = float('.'.join(final))
+    if final == 6.1:
+        return 0
+    else:
+        return 1
 #获取状态
 def getStatus():
     if os.path.exists('target.ini'):
@@ -11,11 +22,13 @@ def calDates(d1,d2):
     date2 = datetime.datetime.strptime(d2, "%Y-%m-%d").date()
     Days = (date2 - date1).days
     return Days
-#获取信息
-if sys.argv[1] == 'info':
+#检测更新
+if sys.argv[1] == 'update':
     #检测更新
     os.system('start updater\\updater.exe')
-    #info[状态(countdown/undefined),名称,目标日,剩余（过去）天,模式(future/past)]
+#获取信息
+if sys.argv[1] == 'info':
+    #info[状态(countdown/undefined),[名称,目标日,剩余（过去）天,模式(future/past)],[2],[3],[4]]
     info = []
     if getStatus():
         info.append('countdown')
@@ -29,12 +42,25 @@ if sys.argv[1] == 'info':
         curdate = datetime.date.today()
         #计算到目标日（起始日）的天数
         days = calDates(str(curdate),infos[1])
+        #如果在指定日期运行，则弹出提示
+        #如果在windows7环境下运行则不运行本脚本
+        if checkwin7():
+            specials = [365,100,50,20,10,5,3,2,1,0]
+            for i in specials:
+                if abs(days) == i:
+                    #如果是0则单独提示
+                    if days == 0:
+                        os.system('start snoretoast\\bin\\snoretoast.exe -t '+infos[0]+'就是今天！ -m 今日：'+infos[1]+' -p icon.ico')
+                    #弹出提示
+                    if days < 0:
+                        os.system('start snoretoast\\bin\\snoretoast.exe -t 距'+infos[0]+'已经过去'+str(i)+'天！ -m 起始日：'+infos[1]+' -p icon.ico')
+                    else:
+                        os.system('start snoretoast\\bin\\snoretoast.exe -t 距'+infos[0]+'还有'+str(i)+'天！ -m 目标日：'+infos[1]+' -p icon.ico')
         #如果大于等于0则设为倒数，如果小于0则设为倒数
+        info.append(str(abs(days)))
         if days >= 0:
-            info.append(str(days))
             info.append('future')
         elif days < 0:
-            info.append(str(abs(days)))
             info.append('past')
     else:
         #未设置
