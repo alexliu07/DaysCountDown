@@ -50,12 +50,12 @@ if sys.argv[1] == 'info':
                 if abs(days) == i:
                     #如果是0则单独提示
                     if days == 0:
-                        os.system('start snoretoast\\bin\\snoretoast.exe -t '+infos[0]+'就是今天！ -m 今日：'+infos[1]+' -p icon.ico')
+                        os.system('start resources\\app\\utils\\snoretoast\\bin\\snoretoast.exe -t '+infos[0]+'就是今天！ -m 今日：'+infos[1]+' -p icon.ico')
                     #弹出提示
                     if days < 0:
-                        os.system('start snoretoast\\bin\\snoretoast.exe -t 距'+infos[0]+'已经过去'+str(i)+'天！ -m 起始日：'+infos[1]+' -p icon.ico')
+                        os.system('start resources\\app\\utils\\snoretoast\\bin\\snoretoast.exe -t 距'+infos[0]+'已经过去'+str(i)+'天！ -m 起始日：'+infos[1]+' -p icon.ico')
                     else:
-                        os.system('start snoretoast\\bin\\snoretoast.exe -t 距'+infos[0]+'还有'+str(i)+'天！ -m 目标日：'+infos[1]+' -p icon.ico')
+                        os.system('start resources\\app\\utils\\snoretoast\\bin\\snoretoast.exe -t 距'+infos[0]+'还有'+str(i)+'天！ -m 目标日：'+infos[1]+' -p icon.ico')
         #如果大于等于0则设为倒数，如果小于0则设为倒数
         info.append(str(abs(days)))
         if days >= 0:
