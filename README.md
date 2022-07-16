@@ -31,3 +31,9 @@ util.py为程序使用所需的系统交互代码，必须编译才可使用源�
 ***
 本程序为更新程序，需在打包好的程序中运行，放在这里仅作为源码查看
 若使用源码编译运行请在util.py中删除16-17行以去除本组件
+***
+## 使用到的程序
+主程序使用<a href="https://nodejs.org/">Nodejs</a>+<a href="https://www.electronjs.org/">Electron</a>构建<br>
+辅助程序使用<a href="https://www.python.org/">Python</a>构建<br>
+解压更新包程序：<a href="https://www.7-zip.org/">7-Zip</a><br>
+吐司通知程序：<a href="https://github.com/KDE/snoretoast">Snoretoast</a><br>
