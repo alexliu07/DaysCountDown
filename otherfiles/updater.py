@@ -73,3 +73,5 @@ if current_version < latest_version:
             os.system('start dayscountdown.exe')
         else:
             error('File size not match. Maybe download error.')
+else:
+    messagebox.showinfo('未检测到更新','Days Count Down为最新版本！')
