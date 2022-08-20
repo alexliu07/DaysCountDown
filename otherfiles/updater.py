@@ -2,12 +2,19 @@ import requests,os,tkinter,datetime,sys
 from tkinter import messagebox
 #错误时的处理
 def error(e):
-    messagebox.showerror('更新错误','错误信息已保存至errorlog.log')
     errfile = open('errorlog.log','a',encoding='utf-8')
     content = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n' + str(e) + '\n\n'
     errfile.write(content)
     errfile.close()
     sys.exit()
+#获取github ip
+try:
+    ips = eval(requests.get('https://raw.hellogithub.com/hosts.json').text)
+except Exception as e:
+    error(e)
+for i in ips:
+    if i[1] == 'github.com':
+        githuburl = i[0]
 #隐藏窗口
 win = tkinter.Tk()
 win.withdraw()
@@ -27,23 +34,12 @@ current_version = float(file.read())
 file.close()
 #检测更新
 if current_version < latest_version:
-    try:
-        #获取当前IP地理位置
-        curip = requests.get('http://ifconfig.me/ip', timeout=1).text.strip()
-        ipconfig = requests.get('http://ip-api.com/json/'+curip).json()
-    except Exception as e:
-        error(e)
     #查找更新包大小
     for i in latest_version_detail['assets']:
         if i['name'] == 'app-update.zip':
             update_size = i['size']
-    #检测github是否能正常访问
-    if ipconfig['countryCode'] == 'CN':
-        github = 'hub.xn--gzu630h.xn--kpry57d'
-    else:
-        github = 'github.com'
     #询问是否更新
-    asks = messagebox.askokcancel('Days Count Down更新','检测到倒数日电脑版有更新，是否进行更新？\n新版本：{}    当前版本：{}\n更新内容：\n{}'.format(latest_version,current_version,latest_version_detail['body']))
+    asks = messagebox.askokcancel('Days Count Down更新','检测到Days Count Down有更新，是否进行更新？\n新版本：{}    当前版本：{}\n更新内容：\n{}'.format(latest_version,current_version,latest_version_detail['body']))
     if asks:
         #检测文件夹是否存在
         if not os.path.exists('updater/tmp'):
@@ -52,7 +48,7 @@ if current_version < latest_version:
         if not os.path.exists('updater/tmp/tmp.zip'):
             print('正在下载更新...')
             try:
-                filed = requests.get('https://'+github+'/alexliu07/dayscountdown/releases/download/'+str(latest_version)+'/app-update.zip')
+                filed = requests.get('https://'+githuburl+'/alexliu07/dayscountdown/releases/download/'+str(latest_version)+'/app-update.zip',verify=False)
                 filetmp = open('updater/tmp/tmp.zip','wb')
                 filetmp.write(filed.content)
                 filetmp.close()

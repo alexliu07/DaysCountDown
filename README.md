@@ -24,14 +24,12 @@
 util.py为程序使用所需的系统交互代码，必须编译才可使用源码运行程序
 1. 安装Python
 2. 安装Pyinstaller<br>`pip install pyinstaller`
-3. 在源码路径下新建utils文件夹
-4. 将otherfiles下的util.py使用pyinstaller编译
-5. 将编译后的文件放入源码路径下utils文件夹
+3. 将otherfiles下的util.py使用pyinstaller编译
+4. 将编译后的文件放入源码路径下utils文件夹
 ***
 ### updater.py使用
 ***
 本程序为更新程序，需在打包好的程序中运行，放在这里仅作为源码查看
-若使用源码编译运行请在util.py中删除16-17行以去除本组件
 ***
 ## 使用到的程序
 主程序使用<a href="https://nodejs.org/">Nodejs</a>+<a href="https://www.electronjs.org/">Electron</a>构建<br>

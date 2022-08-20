@@ -5,14 +5,6 @@
         <meta charset='utf-8'>
     </head>
     <style>
-    @font-face {
-		font-family:weiruanyahei;
-	    src:url("fonts/msyh.ttc");
-	}
-    @font-face {
-		font-family:dengxian;
-	    src:url("fonts/dengxian.ttf");
-	}
     @keyframes in { 
         0% {opacity: 0;}
         100%{opacity:1;}
@@ -50,7 +42,7 @@
         color:white;
     }
     .text{
-        font-family: weiruanyahei;
+        font-family:"Microsoft YaHei";
     }
     #targetname{
         -webkit-app-region:drag;
@@ -63,12 +55,11 @@
         font-size: 50px;
     }
     #number{
-        font-family: dengxian;
+        font-family:'Century Gothic';
         font-size: 250px;
-        font-weight: bold;
     }
     #countertexts{
-        padding-top: 10%;
+        padding-top: 5%;
     }
     .target{
         font-size: 30px;
@@ -98,7 +89,7 @@
         color: black;
         border: 3px solid yellowgreen;
         border-radius: 10px;
-        font-family: weiruanyahei;
+        font-family: "Microsoft YaHei";
     }
     button:hover {
         background-color:yellowgreen;
@@ -180,7 +171,7 @@
         font-size: 25px;
     }
     .settext{
-        font-family: weiruanyahei;
+        font-family: "Microsoft YaHei";
         color: white;
     }
     #titlew{
@@ -214,6 +205,10 @@
     #isnone{
         display: none;
     }
+    #updateb{
+        width:80px;
+        height:30px;
+    }
     </style>
     <body>
         <div id="container">
@@ -235,7 +230,7 @@
                 <div id="counter">
                     <div id="countertexts">
                         <span class="text counter" id="number"></span>
-                        <span class="text counter">天</span>
+                        <span class="text counter" id="ddda">天</span>
                     </div>
                 </div>
                 <div id="targetday">
@@ -259,7 +254,7 @@
             </div>
             <div id="settingwindow">
                 <div id="setting">
-                    <span class="settext" id="titlew">简易倒数日 - By Alex Liu</span>
+                    <span class="settext" id="titlew">Days Count Down</span>
                     <div id="editdiv">
                         <span class="settext" id="sstext">编辑倒数日</span><br>
                         <hr id="line">
@@ -270,7 +265,8 @@
                         <button class="setbtn" id="save">保存</button>
                         <button class="setbtn" id="cancel">取消</button>
                         <button class="setbtn" id="delete">删除</button><br><br>
-                        <span class="settext warntext" id="isnone">名称或目标日不能为空</span>
+                        <span class="settext warntext" id="isnone">名称或目标日不能为空</span><br><br>
+                        <button class="setbtn" id="updateb">检测更新</button>
                     </div>
                 </div>
             </div>
@@ -305,34 +301,52 @@
             var tname = document.getElementById('targetname');
             var dleft = document.getElementById('number');
             var tdate = document.getElementById('targetdd');
+            var ddda = document.getElementById('ddda');
             //操作指令
             var save = document.getElementById('save');
             var deletebtn = document.getElementById('delete');
             var isnone = document.getElementById('isnone');
+            var chkupdate = document.getElementById('updateb')
             //填写的信息
             var named = document.getElementById('named');
             var targetd = document.getElementById('targetd');
-            //获取信息
-            var info = ipcRenderer.sendSync("sync-message", 'getinfo');
-            status = info[0];
-            targetname = info[1];
-            targetdate = info[2];
-            daysleft = info[3];
-            mode = info[4];
-            //显示信息
-            tname.innerHTML = targetname;
-            dleft.innerHTML = daysleft;
-            tdate.innerHTML = targetdate;
-            //显示模式切换
-            if(mode == 'past'){
-                toptexts.style.backgroundColor = '#e67b2f';
-                modetext.innerHTML = '已经过去：';
-                modetarget.innerHTML = '起始日：';
-            }else{
-                toptexts.style.backgroundColor = '#3184d0';
-                modetext.innerHTML = '还有：'
-                modetarget.innerHTML = '目标日：';
+            //检测更新
+            updateb.onclick = function(){
+                ipcRenderer.sendSync("sync-message", 'update');
             }
+            //获取信息
+            function getrInfo(){
+                //获取信息
+                var info = ipcRenderer.sendSync("sync-message", 'getinfo');
+                status = info[0];
+                targetname = info[1];
+                targetdate = info[2];
+                daysleft = info[3];
+                mode = info[4];
+                //显示信息
+                tname.innerHTML = targetname;
+                dleft.innerHTML = daysleft;
+                tdate.innerHTML = targetdate;
+                //显示模式切换
+                if(mode == 'past'){
+                    toptexts.style.backgroundColor = '#e67b2f';
+                    modetext.innerHTML = '已经过去：';
+                    modetarget.innerHTML = '起始日：';
+                }else{
+                    toptexts.style.backgroundColor = '#3184d0';
+                    modetext.innerHTML = '还有：'
+                    modetarget.innerHTML = '目标日：';
+                }
+                //10天以内使用红字提醒
+                if(mode == 'future' && daysleft <= 10){
+                    dleft.style.color = 'red';
+                    ddda.style.color = 'red';
+                }else{
+                    dleft.style.color = 'black';
+                    ddda.style.color = 'black';
+                }
+            }
+            getrInfo()
             //获取锁定状态
             var lockstatus = ipcRenderer.sendSync("sync-message", 'getlock');
             lock = lockstatus;
@@ -346,12 +360,6 @@
                 lockBtnu.src = 'imgs/locked.png';
                 tname.style.webkitAppRegion = 'no-drag';
                 dgbaru.style.webkitAppRegion = 'no-drag';
-            }
-            //10天以内使用红字提醒
-            if(mode == 'future' && daysleft <= 10){
-                dleft.style.color = 'red';
-            }else{
-                dleft.style.color = 'black';
             }
             //根据状态显示窗口
             if(status == 'undefined'){
@@ -452,8 +460,10 @@
                     }
                     if(mode == 'future' && daysleft <= 10){
                         dleft.style.color = 'red';
+                        ddda.style.color = 'red';
                     }else{
                         dleft.style.color = 'black';
+                        ddda.style.color = 'black';
                     }
                     if(mode == 'past'){
                         toptexts.style.backgroundColor = '#e67b2f';
@@ -493,33 +503,7 @@
             //每隔600秒刷新一次
             var timer = setInterval(function(){
                 if(status == 'countdown'){
-                    //获取信息
-                    var info = ipcRenderer.sendSync("sync-message", 'getinfo');
-                    status = info[0];
-                    targetname = info[1];
-                    targetdate = info[2];
-                    daysleft = info[3];
-                    mode = info[4];
-                    //显示信息
-                    tname.innerHTML = targetname;
-                    dleft.innerHTML = daysleft;
-                    tdate.innerHTML = targetdate;
-                    //显示模式切换
-                    if(mode == 'past'){
-                        toptexts.style.backgroundColor = '#e67b2f';
-                        modetext.innerHTML = '已经过去：';
-                        modetarget.innerHTML = '起始日：';
-                    }else{
-                        toptexts.style.backgroundColor = '#3184d0';
-                        modetext.innerHTML = '还有：'
-                        modetarget.innerHTML = '目标日：';
-                    }
-                    //10天以内使用红字提醒
-                    if(mode == 'future' && daysleft <= 10){
-                        dleft.style.color = 'red';
-                    }else{
-                        dleft.style.color = 'black';
-                    }
+                    getrInfo();
                 }
             },600000);
         </script>

@@ -38,6 +38,11 @@
     const url = path.resolve(__dirname, 'utils/util.exe');
     //监听请求
     ipcMain.on("sync-message", (event, arg) => {
+        //检测更新
+        if(arg == 'update'){
+            child_process.spawn(url, ['update'], {encoding: 'utf-8'});
+            event.returnValue = 0;
+        }
         //保存坐标
         if(arg == 'savepos'){
             var pos = win.getPosition();
@@ -88,6 +93,7 @@
         }
         //获取信息
         if(arg == 'getinfo'){
+            win.setSkipTaskbar(true);
             var spawnObj = child_process.spawn(url, ['info'], {encoding: 'utf-8'});
             spawnObj.stdout.on('data', function(chunk) {
                 stdss = iconv.decode(chunk, 'gbk');
