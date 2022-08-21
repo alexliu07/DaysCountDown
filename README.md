@@ -36,3 +36,4 @@ util.py为程序使用所需的系统交互代码，必须编译才可使用源�
 辅助程序使用<a href="https://www.python.org/">Python</a>构建<br>
 解压更新包程序：<a href="https://www.7-zip.org/">7-Zip</a><br>
 吐司通知程序：<a href="https://github.com/KDE/snoretoast">Snoretoast</a><br>
+Github加速IP：<a href="https://github.com/521xueweihan/GitHub520">Github520</a>
