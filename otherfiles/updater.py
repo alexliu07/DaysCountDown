@@ -1,11 +1,8 @@
-import requests,os,tkinter,datetime,sys
+import requests,os,tkinter,sys
 from tkinter import messagebox
 #错误时的处理
 def error(e):
-    errfile = open('errorlog.log','a',encoding='utf-8')
-    content = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n' + str(e) + '\n\n'
-    errfile.write(content)
-    errfile.close()
+    messagebox.showerror('更新错误','错误信息：\n'+e)
     sys.exit()
 #获取github ip
 try:

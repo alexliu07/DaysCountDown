@@ -16,6 +16,12 @@
     @font-face {
         font-family: harmony;
         src: url('fonts/HarmonyOS_Number.woff2');
+        unicode-range: U+0030-0039;
+    }
+    @font-face {
+        font-family: yaheisub;
+        src: local("Microsoft YaHei");
+        unicode-range: U+002D;
     }
     #container{
         width: 100%;
@@ -212,6 +218,9 @@
     #updateb{
         width:80px;
         height:30px;
+    }
+    #targetdd{
+        font-family: harmony,yaheisub;
     }
     </style>
     <body>
