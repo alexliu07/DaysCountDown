@@ -4,6 +4,30 @@ from tkinter import messagebox
 def error(e):
     messagebox.showerror('更新错误','错误信息：\n'+e)
     sys.exit()
+#隐藏窗口
+win = tkinter.Tk()
+win.withdraw()
+#寻找是否有本地更新包
+if os.path.exists('updater/offline/app-update.zip'):
+    asks = messagebox.askyesnocancel('Days Count Down离线更新','检测到Days Count Down的离线更新包，是否进行更新\n建议从官方Github下载更新包，对第三方更新包引起的程序出错概不负责\n单击“是”以进行更新，单击“否”以在线搜索更新，单击“取消”以取消更新')
+    if asks == True:
+        os.system('taskkill /t /f /im dayscountdown.exe')
+        #删除源文件
+        os.system('rmdir /s /q resources\\app')
+        #解压更新文件
+        os.system('updater\\7zip\\7za.exe x -o"resources" updater/offline/app-update.zip')
+        #记录最新版本
+        filej = open('resources/app/package.json','r',encoding='utf-8')
+        latest_detail = eval(filej.read())
+        latest_version = float(latest_detail['version'][:3])
+        filen = open('version.ini','w+',encoding='utf-8')
+        filen.write(str(latest_version))
+        filen.close()
+        #启动程序
+        os.system('start dayscountdown.exe')
+        sys.exit()
+    elif asks == None:
+        sys.exit()
 #获取github ip
 try:
     ips = eval(requests.get('https://raw.hellogithub.com/hosts.json').text)
@@ -12,9 +36,6 @@ except Exception as e:
 for i in ips:
     if i[1] == 'github.com':
         githuburl = i[0]
-#隐藏窗口
-win = tkinter.Tk()
-win.withdraw()
 #获取最新版本信息
 try:
     info = requests.get('https://api.github.com/repos/alexliu07/dayscountdown/releases').text
