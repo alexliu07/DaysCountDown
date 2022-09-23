@@ -1,4 +1,5 @@
-import os,sys,datetime,platform
+import os,sys,datetime,platform,base64,tkinter
+from tkinter import filedialog,messagebox
 #检测win7
 def checkwin7():
     final = []
@@ -22,6 +23,7 @@ def calDates(d1,d2):
     date2 = datetime.datetime.strptime(d2, "%Y-%m-%d").date()
     Days = (date2 - date1).days
     return Days
+tkinter.Tk().withdraw()
 #检测更新
 if sys.argv[1] == 'update':
     #检测更新
@@ -87,17 +89,22 @@ elif sys.argv[1] == 'save':
 #删除信息
 elif sys.argv[1] == 'delete':
     os.remove('target.ini')
-#获取窗体位置
-elif sys.argv[1] == 'getpos':
+#获取窗体信息
+elif sys.argv[1] == 'getwindow':
     if not os.path.exists('window.ini'):
         file = open('window.ini','w+',encoding='utf-8')
-        file.write('["undefined","undefined","unlocked"]')
+        file.write('["undefined","undefined","unlocked","normal"]')
         file.close()
         print('undefined,undefined,unlocked',end='')
     else:
         file = open('window.ini','r',encoding='utf-8')
         posi = eval(file.read())
         file.close()
+        try:
+            if posi[3]:
+                pass
+        except IndexError:
+            posi.append('normal')
         tmp = ','.join(posi)
         print(tmp,end='')
 #保存窗体位置
@@ -130,3 +137,55 @@ elif sys.argv[1] == 'unlock':
     filen = open('window.ini','w+',encoding='utf-8')
     filen.write(str(oldlist))
     filen.close()
+#保存小窗模式
+elif sys.argv[1] == 'mini':
+    file = open('window.ini','r',encoding='utf-8')
+    oldlist = eval(file.read())
+    file.close()
+    try:
+        oldlist[3] = 'mini'
+    except IndexError:
+        oldlist.append('mini')
+    filen = open('window.ini','w+',encoding='utf-8')
+    filen.write(str(oldlist))
+    filen.close()
+#保存大窗模式
+elif sys.argv[1] == 'rev':
+    file = open('window.ini','r',encoding='utf-8')
+    oldlist = eval(file.read())
+    file.close()
+    try:
+        oldlist[3] = 'normal'
+    except IndexError:
+        oldlist.append('normal')
+    filen = open('window.ini','w+',encoding='utf-8')
+    filen.write(str(oldlist))
+    filen.close()
+#导入文件
+elif sys.argv[1] == 'importd':
+    filew = filedialog.askopenfilename(title='请选择要导入的文件',filetype=[('Backup File', '.dcd')])
+    if filew != '':
+        file = open(filew,'r',encoding='utf-8')
+        wr = file.read()
+        file.close()
+        content = base64.b64decode(wr.encode()).decode()
+        file = open('target.ini','w+',encoding='utf-8')
+        file.write(content)
+        file.close()
+        print(0,end='')
+    else:
+        print(1,end='')
+#导出文件
+elif sys.argv[1] == 'exportd':
+    filed = filedialog.askdirectory(title="请选择要导出到的目录")
+    if filed != '':
+        file = open('target.ini','r',encoding='utf-8')
+        infos = eval(file.read())
+        file.close()
+        infos_tow = base64.b64encode(str(infos).encode()).decode()
+        curdate = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        file = open(filed+'/backup-'+curdate+'.dcd','w+',encoding='utf-8')
+        file.write(infos_tow)
+        file.close()
+        messagebox.showinfo('导出成功','文件已保存至：\n'+filed+'/backup-'+curdate+'.dcd')
+    print(0,end='')

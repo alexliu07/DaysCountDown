@@ -9,6 +9,7 @@
         win = new BrowserWindow({
             width: 500, 
             height: 500,
+            maxheight:500,
             frame: false,
             transparent:true,
             webPreferences: {
@@ -43,38 +44,40 @@
             child_process.spawn(url, ['update'], {encoding: 'utf-8'});
             event.returnValue = 0;
         }
-        //保存坐标
-        if(arg == 'savepos'){
+        //记录锁定状态
+        else if(arg == 'lock'){
+            //保存坐标
             var pos = win.getPosition();
             var tmp = "['"+pos.join("','")+"']";
             child_process.spawn(url, ['savepos',tmp], {encoding: 'utf-8'});
-            event.returnValue = 0;
-        }
-        //记录锁定状态
-        if(arg == 'lock'){
             child_process.spawn(url, ['lock'], {encoding: 'utf-8'});
             event.returnValue = 0;
         }
         //记录解锁状态
-        if(arg == 'unlock'){
+        else if(arg == 'unlock'){
             child_process.spawn(url, ['unlock'], {encoding: 'utf-8'});
             event.returnValue = 0;
         }
         //获取锁定
-        if(arg == 'getlock'){
-            var spawnOb = child_process.spawn(url, ['getpos'], {encoding: 'utf-8'});
+        else if(arg == 'getwindow'){
+            var spawnOb = child_process.spawn(url, ['getwindow'], {encoding: 'utf-8'});
             spawnOb.stdout.on('data', function(chunk) {
                 stdss = chunk.toString();
-                posi = stdss.split(',');
-                event.returnValue = posi[2];
+                var posi = stdss.split(',');
+                if(posi[3] == 'mini'){
+                    win.resizable = true;
+                    win.setSize(500,120);
+                    win.resizable = false;
+                }
+                event.returnValue = [posi[2],posi[3]];
             });
         }
         //设置窗口坐标
-        if(arg == 'setpos'){
-            var spawnOb = child_process.spawn(url, ['getpos'], {encoding: 'utf-8'});
+        else if(arg == 'setpos'){
+            var spawnOb = child_process.spawn(url, ['getwindow'], {encoding: 'utf-8'});
             spawnOb.stdout.on('data', function(chunk) {
                 stdss = chunk.toString();
-                posi = stdss.split(',');
+                var posi = stdss.split(',');
                 if(posi[0] != 'undefined' && posi[1] != 'undefined'){
                     win.setPosition(Number(posi[0]), Number(posi[1]));
                 }
@@ -82,7 +85,7 @@
             event.returnValue = 0;
         }
         //退出程序
-        if(arg == 'exit'){
+        else if(arg == 'exit'){
             var pos = win.getPosition();
             var tmp = "['"+pos.join("','")+"']";
             var spawnObt = child_process.spawn(url, ['savepos',tmp], {encoding: 'utf-8'});
@@ -92,7 +95,7 @@
             });
         }
         //获取信息
-        if(arg == 'getinfo'){
+        else if(arg == 'getinfo'){
             win.setSkipTaskbar(true);
             var spawnObj = child_process.spawn(url, ['info'], {encoding: 'utf-8'});
             spawnObj.stdout.on('data', function(chunk) {
@@ -102,7 +105,7 @@
             });
         }
         //保存信息
-        if(arg.search("save") != -1){
+        else if(arg.search("save") != -1){
             var saveList = arg.split('/../');
             var tmp = "['"+saveList.join("','")+"']";
             var chdobj = child_process.spawn(url, ['save',tmp], {encoding: 'utf-8'});
@@ -110,8 +113,42 @@
                 event.returnValue = chunk.toString();
             });
         }
+        //小窗模式
+        else if(arg == 'mini'){
+            win.resizable = true;
+            win.setSize(500,120);
+            win.resizable = false;
+            child_process.spawn(url, ['mini'], {encoding: 'utf-8'});
+            event.returnValue = 0;
+        }
+        //还原大窗
+        else if(arg == 'rev'){
+            win.resizable = true;
+            win.setSize(500,500);
+            win.resizable = false;
+            child_process.spawn(url, ['rev'], {encoding: 'utf-8'});
+            event.returnValue = 0;
+        }
+        //导入文件
+        else if(arg == 'importd'){
+            var spawnObt = child_process.spawn(url, ['importd'], {encoding: 'utf-8'});
+            spawnObt.stdout.on('data', function(chunk) {
+                if(chunk.toString() == '1'){
+                    event.returnValue = 1;
+                }else{
+                    event.returnValue = 0;
+                }
+            });
+        }
+        //导出文件
+        else if(arg == 'exportd'){
+            var spawnObt = child_process.spawn(url, ['exportd'], {encoding: 'utf-8'});
+            spawnObt.stdout.on('data', function(chunk) {
+                event.returnValue = 0;
+            });
+        }
         //删除信息
-        if(arg == 'delete'){
+        else if(arg == 'delete'){
             child_process.spawn(url, ['delete'], {encoding: 'utf-8'});
             event.returnValue = 0;
         }

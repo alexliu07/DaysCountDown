@@ -1,0 +1,280 @@
+@keyframes in { 
+    0% {opacity: 0;}
+    100%{opacity:1;}
+}
+@keyframes out { 
+    0% {opacity: 1;}
+    100%{opacity:0;}
+}
+@font-face {
+    font-family: harmony;
+    src: url('../fonts/HarmonyOS_Number.woff2');
+    unicode-range: U+0030-0039;
+}
+@font-face {
+    font-family: yaheisub;
+    src: local("Microsoft YaHei");
+    unicode-range: U+002D;
+}
+#container{
+    width: 100%;
+    height: 480px;
+}
+#topbar{
+    height: 15%;
+    width: 100%;
+    border-radius: 10px 10px 0px 0px;
+    text-align: center;
+    
+}
+#counter{
+    height: 75%;
+    width: 100%;
+    background-color: white;
+    text-align: center;
+}
+#targetday{
+    height: 10%;
+    width: 100%;
+    background-color: #f7f6f4;
+    border-radius: 0px 0px 10px 10px;
+    text-align: center;
+}
+.top{
+    font-size: 40px;
+    color:white;
+}
+.text{
+    font-family:"Microsoft YaHei";
+}
+#targetname{
+    -webkit-app-region:drag;
+    font-weight: bold;
+}
+#toptexts{
+    padding-top: 2%;
+}
+.counter{
+    font-size: 50px;
+}
+#number{
+    font-family:harmony;
+    font-size: 210px;
+}
+#countertexts{
+    padding-top: 3%;
+}
+.target{
+    font-size: 30px;
+    color: #afadad;
+}
+#targettexts{
+    padding-top: 1%;
+}
+#controlbar{
+    height: 7%;
+    width: 96.8%;
+    background-color: rgba(0, 0, 0,0.4);
+    position: absolute;
+    z-index: 2;
+    border-radius: 10px 10px 0px 0px;
+    display: none;
+    transition: 0.4s;
+    transition-duration: 0.4s;
+}
+#controlbarmin{
+    height: 30%;
+    width: 96.8%;
+    background-color: rgba(0, 0, 0,0.4);
+    position: absolute;
+    z-index: 2;
+    border-radius: 10px 10px 0px 0px;
+    display: none;
+    transition: 0.4s;
+    transition-duration: 0.4s;
+}
+#topbar:hover #controlbar{
+    display: block;
+}
+#miniwindow:hover #controlbarmin{
+    display:block;
+}
+button {
+    transition: 0.4s;
+    transition-duration: 0.4s;
+    background-color: white;
+    color: black;
+    border: 3px solid yellowgreen;
+    border-radius: 10px;
+    font-family: "Microsoft YaHei";
+}
+button:hover {
+    background-color:yellowgreen;
+    color: white;
+    border-radius: 10px;
+}
+.btns{
+    transition: 0.4s;
+    transition-duration: 0.4s;
+    width: 15%;
+}
+.btns:hover{
+    background-color: rgba(211, 211, 211, 0.4);
+    border-radius: 10%;
+}
+.exitandset{
+    transition: 0.4s;
+    transition-duration: 0.4s;
+    padding-left: 65%;
+    padding-right: 1%;
+    padding-top: 1%;
+    display: inline-block;
+    text-align: right;
+}
+#exitbtn{
+    padding-left: 65%;
+    padding-right: 1%;
+    padding-top: 1%;
+    display: inline-block;
+    text-align: right;
+}
+#mainwindow{
+    transition: 0.4s;
+    transition-duration: 0.4s;
+    display: none;
+    height: 100%;
+}
+#settingwindow{
+    height: 100%;
+    text-align: center;
+    border-radius: 10px;
+    background-color: #3184d0;
+    display: none;
+}
+#undefinedwindow{
+    transition: 0.4s;
+    transition-duration: 0.4s;
+    height: 100%;
+    text-align: center;
+    border-radius: 10px;
+    background-color: #3184d0;
+    display: none;
+}
+#noday{
+    margin-top: 25%;
+}
+#dragbar{
+    width: 100%;
+    height: 10%;
+    -webkit-app-region:drag;
+}
+#nodaytext{
+    color: white;
+    font-size: 35px;
+}
+#locku{
+    transition: 0.4s;
+    transition-duration: 0.4s;
+    -webkit-app-region:no-drag;
+}
+#exitundefined{
+    transition: 0.4s;
+    transition-duration: 0.4s;
+    -webkit-app-region:no-drag;
+}
+#createctd{
+    width: 50%;
+    height: 50px;
+    font-size: 25px;
+}
+.settext{
+    font-family: "Microsoft YaHei";
+    color: white;
+}
+#titlew{
+    font-weight: bold;
+    font-size: 30px;
+    -webkit-app-region:drag;
+}
+#sstext{
+    font-size: 30px;
+}
+#editdiv{
+    margin-top: 20%;
+}
+#line{
+    width: 50%;
+}
+.setbtn{
+    width: 60px;
+    height: 40px;
+    font-size: 15px;
+}
+.warntext{
+    font-size: 20px;
+}
+#delete{
+    display: none;
+    border-color: red;
+}
+#delete:hover{
+    background-color: red;
+}
+#isnone{
+    display: none;
+}
+#updateb{
+    width:80px;
+    height:30px;
+}
+#targetdd{
+    font-family: harmony,yaheisub;
+}
+#miniwindow{
+    display: none;
+    height:100%;
+}
+#leftmin{
+    height:100%;
+    width:30%;
+    margin-right:0px;
+    padding-right:0px;
+    border-radius: 10px 0px 0px 10px;
+    text-align: center;
+    float:left;
+}
+#rightmin{
+    background-color: white;
+    height:100%;
+    width:70%;
+    margin-left:0px;
+    padding-left:0px;
+    border-radius: 0px 10px 10px 0px;
+    text-align: center;
+    float:right;
+}
+#titlemin{
+    font-weight: bold;
+    font-size: 200%;
+    color:white;
+    position: relative;
+    top:25%;
+}
+#numberm{
+    margin-top: 0px;
+    font-family:harmony;
+    font-size: 70px;
+}
+#dddam{
+    font-size: 200%;
+}
+#import{
+    display: none;
+    width:50px;
+    height:30px;
+}
+#export{
+    display: none;
+    width:50px;
+    height:30px;
+}
