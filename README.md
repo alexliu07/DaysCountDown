@@ -30,7 +30,9 @@ util.py为程序使用所需的系统交互代码，必须编译才可使用源�
 1. 安装Python
 2. 安装Pyinstaller<br>`pip install pyinstaller`
 3. 将otherfiles下的util.py使用pyinstaller编译
-4. 将编译后的文件放入源码路径下utils文件夹
+4. 在源码路径下新建utils文件夹
+5. 将编译后的文件放入源码路径下utils文件夹
+6. 从<a href="https://download.kde.org/stable/snoretoast/">Snoretoast网站</a>下载最新版Snoretoast，解压后放入utils文件夹，确保snoretoast.exe放在utils/snoretoast/bin目录下
 ***
 ### updater.py使用
 ***

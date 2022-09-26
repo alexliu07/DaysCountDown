@@ -38,7 +38,7 @@ for i in ips:
         githuburl = i[0]
 #获取最新版本信息
 try:
-    info = requests.get('https://api.github.com/repos/alexliu07/dayscountdown/releases').text
+    info = requests.get('https://api.github.com/repos/alexliu07/DaysCountDown/releases').text
     info = info.replace('false','False').replace('true','True').replace('null','None')
     info = eval(info)
     latest_version_detail = info[0]
@@ -66,7 +66,7 @@ if current_version < latest_version:
         if not os.path.exists('updater/tmp/tmp.zip'):
             print('正在下载更新...')
             try:
-                filed = requests.get('https://'+githuburl+'/alexliu07/dayscountdown/releases/download/'+str(latest_version)+'/app-update.zip',verify=False)
+                filed = requests.get('https://'+githuburl+'/alexliu07/DaysCountDown/releases/download/'+str(latest_version)+'/app-update.zip',verify=False)
                 filetmp = open('updater/tmp/tmp.zip','wb')
                 filetmp.write(filed.content)
                 filetmp.close()
