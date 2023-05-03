@@ -1,6 +1,16 @@
 # 倒数日电脑版
 ### 在电脑上放置一个倒数日历，可用于考试、生日、纪念日等
+
 ***注意：4.0以下版本的Updater已无法使用，请手动下载最新版更新***
+
+------
+
+## 重要提示
+
+后续开发迁移至<a href="https://github.com/alexliu07/CountBoard">CountBoard</a>
+
+本Repository不再更新
+
 ***
 ## 使用方法
 ***
